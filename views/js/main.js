@@ -403,16 +403,17 @@ var resizePizzas = function(size) {
   window.performance.mark("mark_start_resize");   // User Timing API function
 
   // Changes the value for the size of the pizza above the slider
+  // CHANGES: Use getElementById instead of querySelector.
   function changeSliderLabel(size) {
     switch(size) {
       case "1":
-        document.querySelector("#pizzaSize").innerHTML = "Small";
+        document.getElementById("pizzaSize").innerHTML = "Small";
         return;
       case "2":
-        document.querySelector("#pizzaSize").innerHTML = "Medium";
+        document.getElementById("pizzaSize").innerHTML = "Medium";
         return;
       case "3":
-        document.querySelector("#pizzaSize").innerHTML = "Large";
+        document.getElementById("pizzaSize").innerHTML = "Large";
         return;
       default:
         console.log("bug in changeSliderLabel");
@@ -437,8 +438,9 @@ var resizePizzas = function(size) {
         default:
           console.log("bug in sizeSwitcher");
     }
-    var ramdomPizza = document.querySelectorAll(".randomPizzaContainer");
-    for (var i = 0; i < ramdomPizza.length; i++) {
+    var ramdomPizza = document.getElementsByClassName("randomPizzaContainer"); //CHANGED: Use getElementsByClassName instead of querySelectorAll
+    var ramdomPizzaLength = ramdomPizza.length; //Declared variable outside FOR loop.
+    for (var i = 0; i < ramdomPizzaLength; i++) {
       ramdomPizza[i].style.width = newwidth + "%";
     }
   }
@@ -455,8 +457,8 @@ var resizePizzas = function(size) {
 window.performance.mark("mark_start_generating"); // collect timing data
 
 // This for-loop actually creates and appends all of the pizzas when the page loads
+var pizzasDiv = document.getElementById("randomPizzas"); //Moved outside de FOR loop.
 for (var i = 2; i < 100; i++) {
-  var pizzasDiv = document.getElementById("randomPizzas");
   pizzasDiv.appendChild(pizzaElementGenerator(i));
 }
 
@@ -514,7 +516,9 @@ window.addEventListener('scroll', updatePositions);
 document.addEventListener('DOMContentLoaded', function() {
   var cols = 8;
   var s = 256;
-  for (var i = 0; i < 200; i++) {
+  //CHANGES: Created a variable and used getElementById
+  var movingPizzas = document.getElementById("movingPizzas1");
+  for (var i = 0; i < 24; i++) { //Reduced from 200 the number of created pizzas.
     var elem = document.createElement('img');
     elem.className = 'mover';
     elem.src = "images/pizza.png";
@@ -522,7 +526,7 @@ document.addEventListener('DOMContentLoaded', function() {
     elem.style.width = "73.333px";
     elem.basicLeft = (i % cols) * s;
     elem.style.top = (Math.floor(i / cols) * s) + 'px';
-    document.querySelector("#movingPizzas1").appendChild(elem);
+    movingPizzas.appendChild(elem);
   }
   updatePositions();
 });
